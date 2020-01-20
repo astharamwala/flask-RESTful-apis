@@ -1,3 +1,5 @@
+import os
+
 import logging
 from flask import Flask
 from flask_jwt import JWT
@@ -14,7 +16,7 @@ logger.debug("Flask app starts now")
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myDatabase.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL','sqlite:///myDatabase.db')
 
 api = Api(app)
 app.secret_key = "SomeSecretKey"
