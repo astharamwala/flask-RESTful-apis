@@ -8,10 +8,6 @@ from resources.item import Item, ItemList
 from resources.user import UserRegister
 from resources.store import Store, StoreList
 
-from db import db
-
-
-
 logger = logging.getLogger("ENV OF LOGGER")
 
 logger.debug("Flask app starts now")
@@ -23,13 +19,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myDatabase.db'
 api = Api(app)
 app.secret_key = "SomeSecretKey"
 
-db.init_app(app)
-
-@app.before_first_request
-def create_table():
-    db.create_all()
-
-
 jwt = JWT(app, authentication, identify)
 
 api.add_resource(Store,"/store/<name>")
@@ -38,5 +27,8 @@ api.add_resource(ItemList, "/items")
 api.add_resource(StoreList, "/stores")
 api.add_resource(UserRegister, '/register')
 
+if __name__ == "__main__":
+    from db import db
 
-app.run(debug=True)
+    db.init_app(app)
+    app.run(debug=True)
