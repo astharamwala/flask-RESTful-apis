@@ -47,7 +47,7 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)
 
         if item is None:
-            item = ItemModel(name, data['price'], data['store_id'])
+            item = ItemModel(name,**data)
         else:
             item.price = data['price']
             item.store_id = data['store_id']
@@ -59,4 +59,5 @@ class Item(Resource):
 class ItemList(Resource):
     def get(self):
         # [item.json() for item in ItemModel.query.all()]
-        return {"Items": list(map(lambda item: item.json(), ItemModel.query.all()))}
+        # return {"Items": list(map(lambda item: item.json(), ItemModel.query.all()))}
+        return {"Items": [item.json() for item in ItemModel.find_all()]}
